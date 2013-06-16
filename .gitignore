@@ -1,1 +1,4 @@
 example/example.inc.php
+bin/
+composer.phar
+vendor
