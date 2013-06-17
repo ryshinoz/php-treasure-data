@@ -10,29 +10,34 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     public function testResult()
     {
-        // TODO 実際のレスンポンス後で確認
-        $returnValues = array();
-        $resutnValue1 = array(
-            'id'   => 1,
-            'name' => 'test'
-        );
-        $returnValues[] = json_encode($resutnValue1);
-        $returnValue2 = array(
-            'id'   => 2,
-            'name' => 'test2'
-        );
-        $returnValues[] = json_encode($returnValue2);
+        $returnValue =<<< EOD
+["560309","s"]
+["198368","p"]
+["560309","s"]
+["607222","s"]
+["198368","p"]
+["607222","s"]
+EOD;
 
-        $mockJob = $this->getMock('Job', array('request'));
-        $mockJob->expects($this->any())->method('request')->will($this->returnValue($returnValues));
+        $mockJob = $this->getMockBuilder('\TreasureData\API\Job')->setMethods(array('request'))->disableOriginalConstructor()->getMock();
+        $mockJob->expects($this->any())->method('request')->will($this->returnValue($returnValue));
 
         $id = 1;
         $format = 'json';
-        $actual = $mockJob->request($id, $format);
+        $actual = $mockJob->result($id, $format);
+
+        $expect = array(
+            array('560309', 's'),
+            array('198368', 'p'),
+            array('560309', 's'),
+            array('607222', 's'),
+            array('198368', 'p'),
+            array('607222', 's'),
+        );
 
         $this->assertThat(
             $actual,
-            $this->equalTo($returnValues)
+            $this->equalTo($expect)
         );
     }
 }
