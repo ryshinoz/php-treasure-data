@@ -57,8 +57,8 @@ class Job extends Base
         $result = $this->request($path, array('format' => $format));
 
         if ($format == 'json') {
-            $arr = explode("\n", trim($result));
-            return array_map("json_decode", $arr);
+            $json = '[' . str_replace("]\n[", "],[", trim($result)) . ']';
+            return json_decode($json);
         }
         return $result;
     }
